@@ -64,6 +64,9 @@ class DetailsProduct extends Component {
         >
           Ir para o carrinho
         </Link>
+        <p data-testid="shopping-cart-size">
+          { localStorage.getItem('quantityItems') }
+        </p>
         <button
           type="button"
           onClick={ () => this.addCart() }
