@@ -49,7 +49,9 @@ class Home extends React.Component {
 
   quantityItemsCart = () => {
     const arr = getSavedCartIDs();
-    this.setState({ quantityItems: arr.length });
+    this.setState({ quantityItems: arr.length }, () => {
+      localStorage.setItem('quantityItems', JSON.stringify(arr.length));
+    });
   };
 
   render() {
@@ -63,7 +65,7 @@ class Home extends React.Component {
         <Link to="/shoppingCart" data-testid="shopping-cart-button">
           Carrinho de compras
         </Link>
-        <p>
+        <p data-testid="shopping-cart-size">
           { quantityItems }
         </p>
         <ul>
