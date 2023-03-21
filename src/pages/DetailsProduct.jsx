@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import { getProductById } from '../services/api';
 import { savedProductLocalStorage, getEvaluation,
-  savedEvaluation } from '../services/savedCart';
+  savedEvaluation, getSavedCartIDs } from '../services/savedCart';
 import EvaluationForm from '../components/EvaluationForm';
 import RatingCard from '../components/RatingCard';
 
@@ -18,6 +18,7 @@ class DetailsProduct extends Component {
     const { match: { params: { id } } } = this.props;
     const getEvaluationData = getEvaluation(id);
     this.setState({ getEvaluationData });
+    this.savedLocalS();
   }
 
   updateEvaluation = (evalute) => {
@@ -34,13 +35,21 @@ class DetailsProduct extends Component {
     this.setState({ data });
   };
 
+  savedLocalS = () => {
+    const arr = getSavedCartIDs();
+    this.setState({ quantityItems: arr.length }, () => {
+      localStorage.setItem('quantityItems', JSON.stringify(arr.length));
+    });
+  };
+
   addCart = () => {
     const { data } = this.state;
     savedProductLocalStorage(data);
+    this.savedLocalS();
   };
 
   render() {
-    const { getEvaluationData, data } = this.state;
+    const { quantityItems, getEvaluationData, data } = this.state;
     const { title, thumbnail, price, attributes } = data;
 
     return (
@@ -65,7 +74,7 @@ class DetailsProduct extends Component {
           Ir para o carrinho
         </Link>
         <p data-testid="shopping-cart-size">
-          { localStorage.getItem('quantityItems') }
+          { quantityItems }
         </p>
         <button
           type="button"
