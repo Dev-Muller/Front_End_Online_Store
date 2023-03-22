@@ -1,9 +1,12 @@
 import React, { Component } from 'react';
+import '../styles/NotFound.css';
 
 class NotFound extends Component {
   render() {
     return (
-      <p>NotFound 404</p>
+      <div className="error404">
+        <p>NotFound 404</p>
+      </div>
     );
   }
 }

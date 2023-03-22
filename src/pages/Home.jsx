@@ -1,19 +1,19 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import ProductCard from '../components/ProductCard';
-import {
-  fetProductsByQuery,
-  getCategories,
-  fetProductsByCategory,
-} from '../services/api';
+import { getCategories, getProductsFromCategoryAndQuery } from '../services/api';
 import { savedProductLocalStorage, getSavedCartIDs } from '../services/savedCart';
+import '../styles/Home.css';
 
 class Home extends React.Component {
   state = {
-    txtSearch: '',
+    query: '',
+    category: '',
     results: [],
     categories: [],
     quantityItems: '',
+    isResearch: false,
+    isResearchEmpty: false,
   };
 
   componentDidMount() {
@@ -27,19 +27,24 @@ class Home extends React.Component {
   };
 
   onInputRadioClick = async ({ target }) => {
-    const data = await fetProductsByCategory(target.id);
-    this.setState({ ...data });
+    const { query } = this.state;
+    const data = await getProductsFromCategoryAndQuery(target.id, query);
+    const { results } = data;
+    const verifyResults = (results.length === 0);
+    this.setState({ ...data, isResearch: true, isResearchEmpty: verifyResults });
   };
 
   handleInputChange = ({ target }) => {
-    const { value } = target;
-    this.setState({ [target.name]: value });
+    const { value, name } = target;
+    this.setState({ [name]: value });
   };
 
   btnSearch = async () => {
-    const { txtSearch } = this.state;
-    const data = await fetProductsByQuery(txtSearch);
-    this.setState({ ...data });
+    const { category, query } = this.state;
+    const data = await await getProductsFromCategoryAndQuery(category, query);
+    const { results } = data;
+    const verifyResults = (results.length === 0);
+    this.setState({ ...data, isResearch: true, isResearchEmpty: verifyResults });
   };
 
   addCart = (product) => {
@@ -55,70 +60,80 @@ class Home extends React.Component {
   };
 
   render() {
-    const { txtSearch, results, categories, quantityItems } = this.state;
+    const { query, results, categories, quantityItems, isResearch,
+      isResearchEmpty } = this.state;
+    const arrResults = (results.map((product) => (
+      <li key={ product.id }>
+        <Link
+          to={ `detailsProduct/${product.id}` }
+          data-testid="product-detail-link"
+        >
+          <ProductCard { ...product } />
+        </Link>
+        <button
+          type="button"
+          onClick={ () => this.addCart(product) }
+          data-testid="product-add-to-cart"
+        >
+          Adiciona ao Carrinho
+        </button>
+      </li>
+    )));
+    const noResearch = (
+      <p data-testid="home-initial-message">
+        Digite algum termo de pesquisa ou escolha uma categoria.
+      </p>);
+    const notFound = (<p>Nenhum produto foi encontrado</p>);
 
     return (
-      <div>
-        <p data-testid="home-initial-message">
-          Digite algum termo de pesquisa ou escolha uma categoria.
-        </p>
-        <Link to="/shoppingCart" data-testid="shopping-cart-button">
-          Carrinho de compras
-        </Link>
-        <p data-testid="shopping-cart-size">
-          { quantityItems }
-        </p>
+      <div className="container-main">
         <ul>
           { categories.map((categoria) => (
             <li key={ categoria.id }>
               <label htmlFor={ categoria.id }>
                 <input
-                  id={ categoria.id }
-                  name="category"
                   type="radio"
-                  data-testid="category"
+                  name="category"
+                  value={ categoria.id }
+                  id={ categoria.id }
+                  onChange={ this.handleInputChange }
                   onClick={ this.onInputRadioClick }
+                  data-testid="category"
                 />
                 { categoria.name }
               </label>
             </li>
           )) }
         </ul>
-        <div>
-          <input
-            type="text"
-            name="txtSearch"
-            value={ txtSearch }
-            onChange={ this.handleInputChange }
-            data-testid="query-input"
-          />
-          <button
-            type="submit"
-            onClick={ this.btnSearch }
-            data-testid="query-button"
-          >
-            Pesquisar
-          </button>
-        </div>
-        <ul>
-          { results.length > 0 ? (results.map((product) => (
-            <li key={ product.id }>
-              <Link
-                to={ `detailsProduct/${product.id}` }
-                data-testid="product-detail-link"
-              >
-                <ProductCard { ...product } />
+        <div className="container-main-query">
+          <section className="container-query">
+            <div className="container-cart">
+              <Link to="/shoppingCart" data-testid="shopping-cart-button">
+                Carrinho de compras
               </Link>
-              <button
-                type="button"
-                onClick={ () => this.addCart(product) }
-                data-testid="product-add-to-cart"
-              >
-                Adiciona ao Carrinho
-              </button>
-            </li>
-          ))) : <p>Nenhum produto foi encontrado</p> }
-        </ul>
+              <p data-testid="shopping-cart-size">
+                { quantityItems }
+              </p>
+            </div>
+            <input
+              type="text"
+              name="query"
+              value={ query }
+              onChange={ this.handleInputChange }
+              data-testid="query-input"
+            />
+            <button
+              type="submit"
+              onClick={ this.btnSearch }
+              data-testid="query-button"
+            >
+              Pesquisar
+            </button>
+          </section>
+          <ul>{ !isResearch && noResearch }</ul>
+          { results.length > 0 && arrResults }
+          { isResearchEmpty && notFound }
+        </div>
       </div>
 
     );
