@@ -130,9 +130,11 @@ class Home extends React.Component {
               Pesquisar
             </button>
           </section>
-          <ul>{ !isResearch && noResearch }</ul>
-          { results.length > 0 && arrResults }
-          { isResearchEmpty && notFound }
+          <ul>
+            { !isResearch && noResearch }
+            { results.length > 0 && arrResults }
+            { isResearchEmpty && notFound }
+          </ul>
         </div>
       </div>
 
