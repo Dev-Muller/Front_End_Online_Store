@@ -50,11 +50,12 @@ class DetailsProduct extends Component {
 
   render() {
     const { quantityItems, getEvaluationData, data } = this.state;
-    const { title, thumbnail, price, attributes } = data;
+    const { title, thumbnail, price, attributes, shipping } = data;
 
     return (
       <div>
         <h2 data-testid="product-detail-name">{ title }</h2>
+        { shipping?.free_shipping && <p data-testid="free-shipping">Frete grátis</p> }
         <p data-testid="product-detail-price">{ price }</p>
         <img src={ thumbnail } alt={ title } data-testid="product-detail-image" />
         <table>
