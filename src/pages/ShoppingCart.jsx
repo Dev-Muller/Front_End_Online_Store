@@ -32,7 +32,10 @@ export default class ShoppingCart extends Component {
 
   increaseProduct = (product) => {
     const { filterProducts } = this.state;
-    filterProducts.find((item) => item.product.id === product.id).quantity += 1;
+    const findProduct = filterProducts.find((item) => item.product.id === product.id);
+    if (findProduct.quantity < findProduct.product.available_quantity) {
+      findProduct.quantity += 1;
+    }
     this.setState({
       filterProducts,
     });
