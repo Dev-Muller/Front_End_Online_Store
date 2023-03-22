@@ -7,7 +7,8 @@ class checkOut extends Component {
   state = {
     arrGetProducts: [],
     total: 0.00,
-    isValid: true,
+    isValid: false,
+    isDisabled: true,
     txtFullName: '',
     txtEmail: '',
     txtCpf: '',
@@ -67,7 +68,7 @@ class checkOut extends Component {
     && txtCep !== ''
     && txtAddress !== ''
     && payment !== '');
-    this.setState({ isValid: !isValidForm });
+    this.setState({ isValid: !isValidForm, isDisabled: !isValidForm });
   };
 
   onBuy = () => {
@@ -81,7 +82,7 @@ class checkOut extends Component {
 
   render() {
     const { txtFullName, txtEmail, txtCpf, txtPhone,
-      txtCep, txtAddress, isValid, total, arrGetProducts } = this.state;
+      txtCep, txtAddress, isValid, total, arrGetProducts, isDisabled } = this.state;
 
     return (
       <div>
@@ -192,6 +193,7 @@ class checkOut extends Component {
         <button
           type="submit"
           onClick={ this.onBuy }
+          disabled={ isDisabled }
           data-testid="checkout-btn"
         >
           Comprar
