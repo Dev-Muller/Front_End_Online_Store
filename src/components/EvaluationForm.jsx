@@ -13,6 +13,7 @@ class EvaluationForm extends Component {
   handleInputChange = ({ target }) => {
     const { value } = target;
     this.setState({ [target.name]: value }, this.validateFields);
+    console.log(target);
   };
 
   validateFields = () => {

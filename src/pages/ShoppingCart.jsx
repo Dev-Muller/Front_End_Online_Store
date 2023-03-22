@@ -100,6 +100,7 @@ export default class ShoppingCart extends Component {
             Seu carrinho está vazio
           </p>
         ) }
+        <Link to="/checkOut" data-testid="checkout-products">Finalizar a compra</Link>
       </div>
     );
   }
