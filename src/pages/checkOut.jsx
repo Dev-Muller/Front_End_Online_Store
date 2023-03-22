@@ -104,6 +104,7 @@ class checkOut extends Component {
           type="text"
           name="txtFullName"
           value={ txtFullName }
+          placeholder="Nome Completo"
           onChange={ this.handleChange }
           data-testid="checkout-fullname"
         />
@@ -111,6 +112,7 @@ class checkOut extends Component {
           type="text"
           name="txtEmail"
           value={ txtEmail }
+          placeholder="Email"
           onChange={ this.handleChange }
           data-testid="checkout-email"
         />
@@ -118,6 +120,7 @@ class checkOut extends Component {
           type="text"
           name="txtCpf"
           value={ txtCpf }
+          placeholder="CPF"
           onChange={ this.handleChange }
           data-testid="checkout-cpf"
         />
@@ -125,6 +128,7 @@ class checkOut extends Component {
           type="text"
           name="txtPhone"
           value={ txtPhone }
+          placeholder="Telefone"
           onChange={ this.handleChange }
           data-testid="checkout-phone"
         />
@@ -132,6 +136,7 @@ class checkOut extends Component {
           type="text"
           name="txtCep"
           value={ txtCep }
+          placeholder="CEP"
           onChange={ this.handleChange }
           data-testid="checkout-cep"
         />
@@ -139,6 +144,7 @@ class checkOut extends Component {
           type="text"
           name="txtAddress"
           value={ txtAddress }
+          placeholder="Endereço"
           onChange={ this.handleChange }
           data-testid="checkout-address"
         />
