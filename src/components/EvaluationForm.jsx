@@ -3,10 +3,10 @@ import PropTypes from 'prop-types';
 
 class EvaluationForm extends Component {
   state = {
-    isError: false,
     email: '',
     text: '',
     rating: '',
+    isError: false,
     isDisabled: true,
   };
 
@@ -20,23 +20,14 @@ class EvaluationForm extends Component {
     const verifyEmail = /^[^\s@]+@[^\s@]+.[^\s@]+$/;
     const validEmail = verifyEmail.test(email);
     const validate = (email !== '' && rating !== '' && validEmail);
-    if (validate) {
-      this.setState({ isDisabled: false, isError: false });
-    } else {
-      this.setState({ isDisabled: true, isError: true });
-    }
+    this.setState({ isDisabled: !validate, isError: !validate });
   };
 
   handleButton = () => {
     const { email, rating, text } = this.state;
     const { updateEvaluation } = this.props;
     updateEvaluation({ email, rating, text });
-    this.setState({
-      email: '',
-      text: '',
-      rating: '',
-      isDisabled: true,
-    });
+    this.setState({ email: '', text: '', rating: '', isDisabled: true });
   };
 
   render() {
@@ -95,6 +86,7 @@ class EvaluationForm extends Component {
               id="txtText"
               name="text"
               value={ text }
+              placeholder="Descrição"
               data-testid="product-detail-evaluation"
               onChange={ this.handleInputChange }
             />

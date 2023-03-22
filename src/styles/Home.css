@@ -1,0 +1,23 @@
+.container-main {
+  display: flex;
+}
+
+.container-main-query {
+  align-items: center;
+  display: flex;
+  flex-flow: column nowrap;
+}
+
+.container-query {
+  display: flex;
+}
+
+.container-cart {
+  position: relative;
+}
+
+.container-cart p {
+  bottom: 0;
+  left: -12px;
+  position: absolute;
+}
